@@ -16,10 +16,9 @@
         </div>
 
         <dialog>
-            <div class="close-button">
-                <button autofocus><span><</span> X <span>></span></button>
-            </div>
             <form action="#" method="dialog">
+                <div class="close-button">
+                    <button formmethod="dialog" autofocus><span><</span> X <span>></span></button>
                 <label for="title">Title:</label>
                 <input type="text" id="title" name="title" required>
 
@@ -27,7 +26,7 @@
                 <input type="text" id="author" name="author" required>
 
                 <label for="pages">How many pages:</label>
-                <input type="number" id="pages" name="pages">
+                <input type="number" id="pages" name="pages" required>
                 <div class="read-book-button">
                     <label for="read">Have you read the book?</label>
                     <label class="switch">
@@ -39,7 +38,39 @@
             </form>
         </dialog>
 
-        <div id="library"> 
+        <div id="library">
+            <div class="book">
+                <h2>The Hobbit</h2>
+                <p><b>By:</b> J.R.R. Tolkien</p>
+                <p><b>320</b> pages</p>
+                <p id="readStatus">Read</p>
+                <br>
+                <button><span><<</span> Delete Book <span>>></span></button>
+            </div>
+            <div class="book">
+                <h2>1984</h2>
+                <p><b>By:</b> George Orwell</p>
+                <p><b>336</b> pages</p>
+                <p id="readStatus">Unread</p>
+                <br>
+                <button><span><<</span> Delete Book <span>>></span></button>
+            </div>
+            <div class="book">
+                <h2>To Kill a Mockingbird</h2>
+                <p><b>By:</b> Harper Lee</p>
+                <p><b>323</b> pages</p>
+                <p id="readStatus">Read</p>
+                <br>
+                <button><span><<</span> Delete Book <span>>></span></button>
+            </div>
+            <div class="book">
+                <h2>The Great Gatsby</h2>
+                <p><b>By:</b> F. Scott Fitzgerald</p>
+                <p><b>208</b> pages</p>
+                <p id="readStatus">Read</p>
+                <br>
+                <button><span><<</span> Delete Book <span>>></span></button>
+            </div>
         </div>
     </main>
     <footer>
