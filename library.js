@@ -64,25 +64,18 @@ function displayBooks() {
 const dialog = document.querySelector("dialog");
 const submitButton = document.querySelector("dialog button");
 const addBookForm = document.querySelector("#add-book");
-const closeButton = document.querySelector("#close-button button");
-const form = document.querySelector("form");
 
 addBookForm.addEventListener("click", () => {
     dialog.showModal();
 });
 
-closeButton.addEventListener("click", () => {
-    form.reset();
-});
-
-// "Close" button closes the dialog
-submitButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    dialog.close();
-});
-
 const addBookButton = document.querySelector('button[type="submit"]');
+const form = document.querySelector("form");
 addBookButton.addEventListener("click", () => {
+    if (!form.checkValidity()) {
+        form.reportValidity(); // Show native validation messages
+        return; // Stop here if the form is invalid
+    }
     const title = document.querySelector("#title").value;
     const author = document.querySelector("#author").value;
     const pages = document.querySelector("#pages").value;
@@ -90,4 +83,13 @@ addBookButton.addEventListener("click", () => {
 
     addBookToLibrary(title, author, pages, readStatus);
     displayBooks();
+    dialog.close();
+    form.reset(); // Reset the form after submission
+});
+
+const closeDialogButton = document.querySelector("#close-dialog-button");
+
+closeDialogButton.addEventListener("click", () => {
+  form.reset();      
+  dialog.close();    
 });

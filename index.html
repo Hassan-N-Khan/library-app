@@ -18,7 +18,8 @@
         <dialog>
             <form action="#" method="dialog">
                 <div class="close-button">
-                    <button formmethod="dialog" autofocus><span><</span> X <span>></span></button>
+                    <button type="button" formmethod="dialog" id="close-dialog-button" autofocus><span><</span> X <span>></span></button>
+                </div>
                 <label for="title">Title:</label>
                 <input type="text" id="title" name="title" required>
 
@@ -30,7 +31,7 @@
                 <div class="read-book-button">
                     <label for="read">Have you read the book?</label>
                     <label class="switch">
-                        <input type="checkbox" id="read" name="read" required>
+                        <input type="checkbox" id="read" name="read">
                         <span class="slider round"></span>
                     </label>
                 </div>

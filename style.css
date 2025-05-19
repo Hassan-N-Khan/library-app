@@ -170,7 +170,7 @@ form button{
     display: flex;
     align-items: center;
     gap: 15px;
-}
+} 
 
 /* The switch - the box around the slider */
 .switch {
