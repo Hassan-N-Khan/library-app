@@ -19,29 +19,29 @@ function addBookToLibrary(title, author, pages, readStatus) {
     
     let book = new Book(title, author, pages, readStatus);
     myLibrary.push(book);
-    console.log(`Book added: ${book.title} by ${book.author}, number of pages ${book.pages}`);
     // displayBooks();
     return book;
 }
 
 function displayBooks() {
+    const bookLists = document.querySelector("#library");
+
+    // ✅ Clear the container so books aren't duplicated
+    bookLists.innerHTML = "";
+
     myLibrary.forEach(book => {
-        const bookLists = document.querySelector("#library");
-
-        
-
         const newDiv = document.createElement("div");
         newDiv.className = "book";
+        newDiv.id = book.uuid;
+        const readStatusClass = book.readStatus === "Read" ? "read-status" : "unread-status";
 
         newDiv.innerHTML = 
             `<h2>${book.title}</h2>
             <p><b>By:</b> ${book.author}</p>
             <p><b>${book.pages}</b> pages</p>
-            <p id="readStatus">${book.readStatus}</p>
+            <button class="readButton"><p class="${readStatusClass}">${book.readStatus}</p></button>
             <br>
-            <button><span><<</span> Delete Book <span>>></span></button>`;
-
-        bookLists.appendChild(newDiv);
+            <button class="deleteBook"><span><<</span> Delete Book <span>>></span></button>`;
 
         if (bookLists) {
             bookLists.appendChild(newDiv);
@@ -50,15 +50,10 @@ function displayBooks() {
             return;
         }
 
-        // const readStatus = newDiv.querySelector("#readStatus");
-        // if (book.readStatus === "Read") {
-        //     readStatus.className = "read-status";
-        //     readStatus.innerHTML = "Read";
-        // }else {
-        //     readStatus.className = "unread-status";
-        //     readStatus.innerHTML = "Unread";
-        // }
+        const deleteButton = newDiv.querySelector(".deleteBook");
+        deleteButton.addEventListener("click", deleteBook);
     });
+    attachReadStatusListeners();
 }
 
 const dialog = document.querySelector("dialog");
@@ -71,25 +66,71 @@ addBookForm.addEventListener("click", () => {
 
 const addBookButton = document.querySelector('button[type="submit"]');
 const form = document.querySelector("form");
+const checkbox = document.querySelector("#read");
 addBookButton.addEventListener("click", () => {
+    if (!dialog.open) {
+        dialog.showModal();
+    }
     if (!form.checkValidity()) {
-        form.reportValidity(); // Show native validation messages
         return; // Stop here if the form is invalid
     }
     const title = document.querySelector("#title").value;
     const author = document.querySelector("#author").value;
     const pages = document.querySelector("#pages").value;
-    const readStatus = "Read";
+    const readStatus = checkbox.checked ? "Read" : "Unread";
 
     addBookToLibrary(title, author, pages, readStatus);
     displayBooks();
+    form.reset();
     dialog.close();
-    form.reset(); // Reset the form after submission
 });
 
 const closeDialogButton = document.querySelector("#close-dialog-button");
-
 closeDialogButton.addEventListener("click", () => {
-  form.reset();      
-  dialog.close();    
+    form.reset();      
+    dialog.close();    
 });
+
+function attachReadStatusListeners() {
+    const readStatusToggle = document.querySelectorAll(".book .readButton");
+    readStatusToggle.forEach(button => {
+        button.removeEventListener("click", toggleStatus);
+        button.addEventListener("click", toggleStatus);
+    });
+}
+
+function toggleStatus(e) {
+    const readStatusChange = e.currentTarget.querySelector("p");
+    if (readStatusChange.textContent === "Read") {
+        readStatusChange.textContent = "Unread";
+        readStatusChange.className = "unread-status";
+    } else {
+        readStatusChange.textContent = "Read";
+        readStatusChange.className = "read-status";
+    }
+}
+
+
+function deleteBook(e) {
+    const bookElement = e.currentTarget.closest(".book");
+    const bookId = bookElement.id;
+    const bookIndex = myLibrary.findIndex(book => book.uuid === bookId);
+    
+    if (bookIndex !== -1) {
+        myLibrary.splice(bookIndex, 1);
+        bookElement.remove();
+    } else {
+        console.error("Book not found in library.");
+    }
+}
+
+function runOnFirstLoad() {
+    addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 310, "Read");
+    addBookToLibrary("The Lord of the Rings", "J.R.R. Tolkien", 1178, "Read");
+    addBookToLibrary("The Catcher in the Rye", "J.D. Salinger", 277, "Unread");
+    addBookToLibrary("To Kill a Mockingbird", "Harper Lee", 281, "Read");
+    displayBooks();
+}
+window.addEventListener("DOMContentLoaded", runOnFirstLoad);
+
+attachReadStatusListeners();
